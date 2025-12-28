@@ -6,13 +6,13 @@
         -->
       {% if "placeholder" in about.profile_image.url %}
       <img
-        width="75%"
+        class="profile-img"
         src="{% static 'images/default.jpg' %}"
         alt="placeholder image"
       />
       {% else %}
       <img
-        width="75%"
+        class="profile-img"
         src=" {{ about.profile_image.url }}"
         alt="{{ about.title }}"
       />
