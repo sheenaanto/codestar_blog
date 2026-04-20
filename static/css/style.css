@@ -8,7 +8,13 @@ body {
     font-weight: 700;
     color: #4A4A4F;
 }
-.profile-img { width: 75%; }
+.profile-img {
+    width: 100%;
+    max-width: 240px;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+}
 
 .red-o {
     color: #E84610;
@@ -37,6 +43,15 @@ body {
 
 .image-container {
     position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.image-container .card-img-top {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
 }
 
 .image-flash {
@@ -48,8 +63,10 @@ body {
 }
 
 .scale {
-    width: 100%;
-    height: auto;
+    width: 100% !important;
+    height: 240px !important;
+    object-fit: cover;
+    display: block;
 }
 
 .author {
@@ -76,6 +93,15 @@ body {
 .masthead-image {
     position: relative;
     overflow: hidden;
+    height: 240px;
+}
+
+.image-container,
+.image-container .card-img-top,
+.scale,
+.masthead-image,
+.profile-img {
+    height: 240px;
 }
 
 .masthead-image:after {
