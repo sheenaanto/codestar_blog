@@ -1,183 +1,170 @@
 # CodeStar Blog
 
-A full-featured Django blog platform with user authentication, comment management, and cloud-based image hosting.
+CodeStar Blog is a Django blog application with authentication, post publishing, comment moderation, and an About page with a collaboration request form.
 
-## Overview
+## What This Project Includes
 
-CodeStar Blog is a modern, responsive blogging platform built with Django that enables users to create, publish, and manage blog posts. It features a clean interface, user authentication, real-time comment moderation, and secure content management.
-
-## Features
-
-- **Blog Post Management**: Create, edit, and publish blog posts with rich text editing (Summernote)
-- **User Authentication**: Secure user registration and login via Django Allauth
-- **Featured Images**: Upload and manage featured images for posts with Cloudinary integration
-- **Comment System**: Readers can comment on posts with admin moderation
-- **Post Filtering**: Display filtered published posts on the homepage with pagination
-- **User Profiles**: User profile pages with profile image support
-- **Collaboration Requests**: Features for collaboration requests between users
-- **Responsive Design**: Bootstrap 5 styling for mobile-friendly experience
+- Post listing with pagination
+- Draft and published post workflow
+- Post detail pages with comments
+- Comment create/edit/delete for signed-in users
+- Admin moderation for comments
+- About page content managed from the database
+- Collaboration request form
+- Cloudinary image hosting for posts and profile images
+- Django Allauth authentication flow
 
 ## Tech Stack
 
-- **Backend**: Django 4.2
-- **Database**: PostgreSQL
-- **Image Storage**: Cloudinary
-- **Frontend**: Bootstrap 5, HTML5, CSS3
-- **Rich Text Editor**: Summernote
-- **Authentication**: Django Allauth
-- **Deployment**: Gunicorn, Heroku (Procfile included)
-- **Package Management**: pip
+- Python 3.12
+- Django 4.2
+- PostgreSQL (production)
+- SQLite (automatically used during tests)
+- Cloudinary + dj3-cloudinary-storage
+- Django Summernote editor
+- Django Crispy Forms with Bootstrap 5
+- Gunicorn + WhiteNoise
 
-### Key Dependencies
+## Quick Start (Local Development)
 
-- django-crispy-forms (Form styling)
-- django-summernote (Rich text editing)
-- cloudinary (Image hosting)
-- dj3-cloudinary-storage (Django Cloudinary integration)
-- django-allauth (User authentication)
-- psycopg2 (PostgreSQL adapter)
+### 1. Clone and enter the project
 
-## Installation
-
-### Prerequisites
-
-- Python 3.8+
-- PostgreSQL
-- Cloudinary account
-
-### Steps
-
-1. **Clone the repository**
-
-   ```bash
-   git clone <repository-url>
-   cd codestar_blog
-   ```
-
-2. **Create a virtual environment**
-
-   ```bash
-   python -m venv env
-   source env/bin/activate  # On Windows: env\Scripts\activate
-   ```
-
-3. **Install dependencies**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Environment Configuration**
-   Create an `env.py` file in the project root and add:
-
-   ```python
-   import os
-
-   os.environ['SECRET_KEY'] = 'your-secret-key'
-   os.environ['DEBUG'] = 'True'
-   os.environ['ALLOWED_HOSTS'] = 'localhost,127.0.0.1'
-   os.environ['DATABASE_URL'] = 'your-database-url'
-   os.environ['CLOUDINARY_URL'] = 'your-cloudinary-url'
-   ```
-
-5. **Run migrations**
-
-   ```bash
-   python manage.py migrate
-   ```
-
-6. **Create a superuser**
-
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. **Run the development server**
-
-   ```bash
-   python manage.py runserver
-   ```
-
-8. **Access the application**
-   - Blog: http://localhost:8000/
-   - Admin: http://localhost:8000/admin/
-
-## Project Structure
-
-```
-codestar_blog/
-├── blog/                 # Main blog app (posts, comments)
-├── about/                # About/profile app
-├── codestar/             # Project settings and configuration
-├── templates/            # HTML templates
-├── static/               # CSS, JavaScript files
-├── db.sqlite3            # Development database
-├── manage.py             # Django management script
-├── requirements.txt      # Python dependencies
-└── README.md             # This file
+```bash
+git clone <your-repository-url>
+cd codestar_blog
 ```
 
-## Usage
+### 2. Create and activate a virtual environment
 
-### Creating a Blog Post
+Windows (PowerShell):
 
-1. Login to the admin panel at `/admin/`
-2. Navigate to **Posts** section
-3. Click **Add Post** and fill in:
-   - Title
-   - Content (using Summernote editor)
-   - Featured Image
-   - Excerpt (optional)
-   - Status (Draft/Published)
-4. Click **Save**
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-### Managing Comments
+macOS/Linux:
 
-1. Go to the admin panel
-2. Select **Comments** to view and approve user comments
-3. Approved comments appear on published posts
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
 
-## Models
+### 3. Install dependencies
 
-### Post
+```bash
+pip install -r requirements.txt
+```
 
-- Title, Slug, Author, Content
-- Featured Image, Excerpt
-- Created/Updated timestamps
-- Publication Status
-- Related Comments
+### 4. Add environment variables
 
-### Comment
+Create an env.py file in the project root with:
 
-- Post (Foreign Key)
-- Author (User)
-- Body text
-- Created timestamp
-- Approval status
+```python
+import os
 
-### Collaboration Request
+os.environ.setdefault("SECRET_KEY", "your-secret-key")
+os.environ.setdefault("DATABASE_URL", "sqlite:///db.sqlite3")
+os.environ.setdefault("CLOUDINARY_URL", "your-cloudinary-url")
+```
 
-- Tracks collaboration requests between users
+Notes:
+
+- DATABASE_URL is required by settings.py
+- In production, use a PostgreSQL URL for DATABASE_URL
+- Keep real values out of version control
+
+### 5. Apply migrations
+
+```bash
+python manage.py migrate
+```
+
+### 6. Create an admin user
+
+```bash
+python manage.py createsuperuser
+```
+
+### 7. Start the server
+
+```bash
+python manage.py runserver
+```
+
+Open:
+
+- Home page: http://127.0.0.1:8000/
+- Admin: http://127.0.0.1:8000/admin/
+- About page: http://127.0.0.1:8000/about/
+
+## Main URLs
+
+- / -> blog index
+- /<slug>/ -> post detail
+- /accounts/ -> authentication routes (Allauth)
+- /about/ -> About + collaboration form
+- /admin/ -> Django admin
+
+## Content Management Workflow
+
+### Publish a blog post
+
+1. Log in to /admin/
+2. Open Posts
+3. Add title, slug, content, featured image, excerpt, and status
+4. Set status to Published to show on the site
+
+### Moderate comments
+
+1. Open Comments in /admin/
+2. Approve comments you want to display publicly
 
 ## Testing
 
-Run tests with:
+Run all tests:
 
 ```bash
 python manage.py test
 ```
 
-Test files are included:
+Run app-specific tests:
 
-- `blog/tests.py` - Blog app tests
-- `blog/test_forms.py` - Form validation tests
-- `blog/tests_views.py` - View tests
-- `about/tests.py` - About app tests
+```bash
+python manage.py test blog
+python manage.py test about
+```
 
-## Deployment
+## Deployment Notes
 
-The project includes a `Procfile` for Heroku deployment. Set required environment variables on your hosting platform before deploying.
+- Procfile is configured to run Gunicorn:
+
+```text
+web: gunicorn codestar.wsgi
+```
+
+- runtime.txt pins Python:
+
+```text
+python-3.12.3
+```
+
+- Required environment variables in deployment:
+  - SECRET_KEY
+  - DATABASE_URL
+  - CLOUDINARY_URL
+
+## Project Structure (High Level)
+
+```text
+about/       About page and collaboration request app
+blog/        Blog posts, comments, and related views/forms
+codestar/    Project settings and root URL configuration
+templates/   Shared templates and allauth templates
+static/      Source static assets
+staticfiles/ Collected static assets
+```
 
 ## License
 
-This project is part of the Code Institute curriculum.
+This project was created as part of the Code Institute learning curriculum.
